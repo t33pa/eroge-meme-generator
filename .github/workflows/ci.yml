@@ -1,0 +1,56 @@
+name: Monthly Data Update CI
+
+on:
+  schedule:
+    - cron: '0 3 29 * *'
+  workflow_dispatch:
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd script
+          pip install -r requirements.txt
+
+      - name: Run data update scripts
+        run: |
+          cd script
+          python download.py
+          python parse_filter_title.py
+          python parse_image_path.py
+          python parse_popular.py
+          python create_vn_id_name.py
+          python create_char_vn_id.py
+          python create_char_vn_name.py
+          python create_valid_char_id.py
+          python create_name_image_dict.py
+          python filter_char_dict.py
+          python parse.py
+
+      - name: Move to src/app
+        run: |
+          cd ../src/app
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Commit and push changes
+        run: |
+          git add .
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Monthly data update - $(date +'%Y-%m-%d')" && git push)
