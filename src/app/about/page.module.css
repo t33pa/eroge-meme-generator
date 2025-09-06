@@ -1,0 +1,40 @@
+.wrapper {
+	width: 85%;
+	height: auto;
+	margin: auto;
+	padding-block: 1rem;
+	font-size: 1.2rem;
+	color: #333;
+}
+
+.contactLink {
+	color: #ff66c4;
+	margin-left: 0.5rem;
+}
+
+.contactLink:hover {
+	color: #ff88e1;
+}
+
+.contactLink:visited {
+	color: #ff66c4;
+}
+
+.usage li {
+	margin-bottom: 0.6rem;
+}
+
+.joinButton:hover {
+	background-color: #ff66c4;
+	color: #777;
+}
+
+.joinButton a {
+	text-decoration: none;
+	color: #333;
+	font-size: 1.3rem;
+}
+
+.joinButton a:visited {
+	color: #333;
+}
